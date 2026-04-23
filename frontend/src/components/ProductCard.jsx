@@ -5,8 +5,16 @@ import {
   HStack,
   Badge,
   useColorModeValue,
+  IconButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { formatIDR } from "../utils/formatCurrency";
+import { Pencil, Trash2 } from "lucide-react";
+import EditProductModal from "./EditModal";
+import DeleteProductDialog from "./DeleteDialog";
+import { useState } from "react";
+import { useProductStore } from "../store/product";
+import toast from "react-hot-toast";
 
 const FALLBACK = "https://placehold.co/400x300/E2E8F0/94A3B8?text=No+Image";
 
@@ -24,7 +32,58 @@ export default function ProductCard({ product }) {
   const subColor = useColorModeValue("gray.400", "gray.500");
   const stockBorder = useColorModeValue("gray.100", "gray.700");
 
-  const badge = product.badge || null;
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
+  } = useDisclosure();
+
+  const [selectedProduct, setSelectedProduct] = useState(product);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { updateProduct, deleteProduct } = useProductStore();
+
+  const handleUpdate = async (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsLoading(true);
+    try {
+      const { success, message } = await updateProduct(id, selectedProduct);
+
+      if (success) {
+        toast.success(message);
+        onEditClose();
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async (e, id) => {
+    e.preventDefault();
+    try {
+      const { success, message } = await deleteProduct(id);
+
+      if (success) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    }
+  };
 
   return (
     <Box
@@ -38,23 +97,30 @@ export default function ProductCard({ product }) {
       role="group"
       position="relative"
     >
-      {badge && (
-        <Badge
-          position="absolute"
-          top={2.5}
-          left={2.5}
-          zIndex={1}
-          colorScheme={BADGE_COLORS[badge] || "gray"}
-          fontSize="2xs"
-          px={2}
-          py={0.5}
-          borderRadius="4px"
-          textTransform="none"
-          fontWeight="600"
-        >
-          {badge}
-        </Badge>
-      )}
+      <Box
+        position="absolute"
+        top={2.5}
+        right={2.5}
+        zIndex={2}
+        opacity={0}
+        _groupHover={{ opacity: 1 }}
+        transition="opacity 0.2s"
+      >
+        <HStack spacing={1}>
+          <IconButton
+            size="sm"
+            colorScheme="yellow"
+            icon={<Pencil size={15} />}
+            onClick={onEditOpen}
+          />
+          <IconButton
+            size="sm"
+            colorScheme="red"
+            icon={<Trash2 size={15} />}
+            onClick={onDeleteOpen}
+          />
+        </HStack>
+      </Box>
 
       <Box h="180px" overflow="hidden" bg={imageBg}>
         <Image
@@ -66,6 +132,18 @@ export default function ProductCard({ product }) {
           fallbackSrc={FALLBACK}
           transition="transform 0.4s"
           _groupHover={{ transform: "scale(1.04)" }}
+        />
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          w="full"
+          h="full"
+          bg="blackAlpha.200"
+          opacity={0}
+          _groupHover={{ opacity: 1 }}
+          transition="opacity 0.3s"
+          pointerEvents="none"
         />
       </Box>
 
@@ -93,17 +171,28 @@ export default function ProductCard({ product }) {
           borderColor={stockBorder}
           spacing={1.5}
         >
-          <Box
-            w={1.5}
-            h={1.5}
-            borderRadius="full"
-            bg={product.inStock !== false ? "green.400" : "red.400"}
-          />
+          <Box w={1.5} h={1.5} borderRadius="full" bg={"green.400"} />
           <Text fontSize="2xs" color={subColor}>
-            {product.inStock !== false ? "In stock" : "Out of stock"}
+            In stock
           </Text>
         </HStack>
       </Box>
+
+      <EditProductModal
+        isOpen={isEditOpen}
+        onClose={onEditClose}
+        product={selectedProduct}
+        setProduct={setSelectedProduct}
+        handleUpdate={handleUpdate}
+        isLoading={isLoading}
+      />
+
+      <DeleteProductDialog
+        isOpen={isDeleteOpen}
+        onClose={onDeleteClose}
+        product={selectedProduct}
+        handleDelete={handleDelete}
+      />
     </Box>
   );
 }

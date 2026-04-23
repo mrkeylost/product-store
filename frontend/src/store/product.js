@@ -13,7 +13,13 @@ export const useProductStore = create((set) => ({
     const res = await api.get("/products");
     set({ products: res.data.data });
 
-    return { success: true, message: "Create Product Success" };
+    return { success: true, message: res.data.message };
+  },
+  fetchProductDetail: async (prodId) => {
+    const res = await api.get(`/products/${prodId}`);
+    set({ products: res.data.data });
+
+    return { success: true, message: res.data.message };
   },
   createProduct: async (newProduct) => {
     if (!newProduct.name || !newProduct.image || !newProduct.price) {
@@ -28,6 +34,24 @@ export const useProductStore = create((set) => ({
     const res = await api.post("/products", formData);
     set((state) => ({
       products: [...state.products, res.data.data],
+    }));
+
+    return { success: true, message: res.data.message };
+  },
+  updateProduct: async (prodId, updatedProduct) => {
+    const formData = new FormData();
+    formData.append("name", updatedProduct.name);
+    formData.append("price", updatedProduct.price);
+    formData.append("image", updatedProduct.image);
+
+    const res = await api.patch(`/products/${prodId}`, formData);
+    if (!res.data.data)
+      return { success: false, message: "Update product failed" };
+
+    set((state) => ({
+      products: state.products.map((product) =>
+        product._id === prodId ? res.data.data : product,
+      ),
     }));
 
     return { success: true, message: res.data.message };

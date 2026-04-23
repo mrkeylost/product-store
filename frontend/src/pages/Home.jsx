@@ -54,7 +54,7 @@ export default function Home() {
             Product Inventory
           </Text>
           <Text fontSize="sm" color={subTextColor} mt={1}>
-            Manage your premium mobile device collection and accessories
+            Manage your product inventory here
           </Text>
         </Box>
       </Flex>

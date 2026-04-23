@@ -10,17 +10,43 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { Bell, Moon, Plus, Store, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const textColor = useColorModeValue("gray.800", "white");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   const hoverBg = useColorModeValue("gray.200", "whiteAlpha.100");
+  const navBg = useColorModeValue("white", "gray.800");
+  const navBorder = useColorModeValue("gray.100", "gray.700");
 
   const { colorMode, toggleColorMode } = useColorMode();
   const { pathname } = useLocation();
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 1);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <Box as="nav" px={8} py={3} position="sticky" top={0} zIndex={100}>
+    <Box
+      as="nav"
+      px={8}
+      py={3}
+      position="sticky"
+      top={0}
+      zIndex={100}
+      bg={scrolled ? navBg : "transparent"}
+      boxShadow={scrolled ? "sm" : "none"}
+      borderBottom={scrolled ? "1px solid" : "none"}
+      borderColor={navBorder}
+      transition="all 0.1s ease"
+    >
       <Flex maxW="7xl" mx="auto" align="center" justify="space-between">
         <Link to={"/"}>
           <Flex align="center">
