@@ -1,14 +1,20 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import { connectDB } from "./repository/db.js";
 import ProductRouter from "./routes/productRouter.js";
 import AppError from "./utils/appError.js";
+import multer from "multer";
+import { storage } from "./cloudinary/index.js";
 
 const PORT = process.env.PORT || 5001;
 const app = express();
+const upload = multer({ storage });
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config({ path: "./.env" });
+
+  app.use(cors({ origin: "http://localhost:5173" }));
 }
 
 app.use(express.urlencoded({ extended: true }));

@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 
@@ -11,7 +13,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "ProductStore",
-    allowedFormat: ["jpeg", "jpg", "png"],
+    allowed_formats: ["jpeg", "jpg", "png"],
   },
 });
 
