@@ -84,7 +84,7 @@ export default function Home() {
         </SimpleGrid>
       ) : (
         <SimpleGrid columns={{ base: 2, md: 3, lg: 4 }} spacing={4}>
-          {products.map((product) => (
+          {(Array.isArray(products) ? products : []).map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
 

@@ -16,6 +16,7 @@
     "axios": "^1.15.2",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.8.0",
+    "product-store": "file:..",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-hot-toast": "^2.6.0",

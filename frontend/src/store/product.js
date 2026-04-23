@@ -11,13 +11,9 @@ export const useProductStore = create((set) => ({
   setProducts: (products) => set({ products }),
   fetchProduct: async () => {
     const res = await api.get("/products");
-    set({ products: res.data.data });
+    const data = Array.isArray(res.data.data) ? res.data.data : [];
 
-    return { success: true, message: res.data.message };
-  },
-  fetchProductDetail: async (prodId) => {
-    const res = await api.get(`/products/${prodId}`);
-    set({ products: res.data.data });
+    set({ products: data });
 
     return { success: true, message: res.data.message };
   },
@@ -49,9 +45,11 @@ export const useProductStore = create((set) => ({
       return { success: false, message: "Update product failed" };
 
     set((state) => ({
-      products: state.products.map((product) =>
-        product._id === prodId ? res.data.data : product,
-      ),
+      products: Array.isArray(state.products)
+        ? state.products.map((product) =>
+            product._id === prodId ? res.data.data : product,
+          )
+        : [],
     }));
 
     return { success: true, message: res.data.message };
