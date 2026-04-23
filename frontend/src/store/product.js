@@ -9,6 +9,12 @@ const BASE_URL =
 export const useProductStore = create((set) => ({
   products: [],
   setProducts: (products) => set({ products }),
+  fetchProduct: async () => {
+    const res = await api.get("/products");
+    set({ products: res.data.data });
+
+    return { success: true, message: "Create Product Success" };
+  },
   createProduct: async (newProduct) => {
     if (!newProduct.name || !newProduct.image || !newProduct.price) {
       return { success: false, message: "Please fill in all fields" };
@@ -24,6 +30,17 @@ export const useProductStore = create((set) => ({
       products: [...state.products, res.data.data],
     }));
 
-    return { success: true, message: "Create Product Success" };
+    return { success: true, message: res.data.message };
+  },
+  deleteProduct: async (prodId) => {
+    const res = await api.delete(`/products/${prodId}`);
+    if (!res.data.data)
+      return { success: false, message: "Delete product failed" };
+
+    set((state) => ({
+      products: state.products.filter((product) => product._id !== prodId),
+    }));
+
+    return { success: true, message: res.data.message };
   },
 }));
