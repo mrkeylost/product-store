@@ -76,12 +76,17 @@ export default function Home() {
             >
               <Skeleton h="180px" />
               <Box p={3}>
-                <SkeletonText
-                  noOfLines={3}
-                  spacing={2}
-                  skeletonHeight={2.5}
-                  mt={1}
-                />
+                <Skeleton h="14px" mb={1.5} />
+                <Skeleton h="12px" w="70%" mb={2} />
+                <Skeleton h="14px" w="50%" />
+                <Box
+                  mt={2}
+                  pt={2}
+                  borderTop="1px solid"
+                  borderColor={borderColor}
+                >
+                  <Skeleton h="10px" w="40%" />
+                </Box>
               </Box>
             </Box>
           ))}
