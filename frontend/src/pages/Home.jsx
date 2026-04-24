@@ -26,13 +26,17 @@ export default function Home() {
 
   const { fetchProduct, products } = useProductStore();
   useEffect(() => {
-    try {
-      fetchProduct();
-    } catch (error) {
-      toast.error(error);
-    } finally {
-      setLoading(false);
-    }
+    const load = async () => {
+      try {
+        await fetchProduct();
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
   }, [fetchProduct]);
 
   return (

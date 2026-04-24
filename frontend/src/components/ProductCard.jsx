@@ -124,7 +124,7 @@ export default function ProductCard({ product }) {
 
       <Box h="180px" overflow="hidden" bg={imageBg}>
         <Image
-          src={product.image.url || FALLBACK}
+          src={product.image?.url || FALLBACK}
           alt={product.name}
           w="full"
           h="full"

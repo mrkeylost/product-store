@@ -80,7 +80,7 @@ export default function Create() {
       if (error.response?.error === 429) {
         toast.error("Rate limit activated, please do not spam");
       } else {
-        toast.error("Failed to create note");
+        toast.error("Failed to create product");
       }
     } finally {
       setIsLoading(false);
