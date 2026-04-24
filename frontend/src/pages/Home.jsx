@@ -73,19 +73,27 @@ export default function Home() {
               overflow="hidden"
               border="1px solid"
               borderColor={borderColor}
+              minH="280px"
             >
-              <Skeleton h="180px" />
+              <Skeleton
+                h="180px"
+                w="100%"
+                startColor={borderColor}
+                endColor="gray.200"
+              />
               <Box p={3}>
-                <Skeleton h="14px" mb={1.5} />
-                <Skeleton h="12px" w="70%" mb={2} />
-                <Skeleton h="14px" w="50%" />
+                <Skeleton h="16px" w="80%" mb={2} />
+                <Skeleton h="16px" w="45%" mb={2} />
                 <Box
                   mt={2}
                   pt={2}
                   borderTop="1px solid"
                   borderColor={borderColor}
+                  display="flex"
+                  alignItems="center"
+                  gap={1.5}
                 >
-                  <Skeleton h="10px" w="40%" />
+                  <Skeleton h="10px" w="35%" />
                 </Box>
               </Box>
             </Box>
