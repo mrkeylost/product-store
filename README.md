@@ -15,7 +15,6 @@ A full-stack product inventory management app built with the **MERN** stack, fea
   - [Environment Variables](#environment-variables)
   - [Running the App](#running-the-app)
 - [Deployment](#deployment)
-- [License](#license)
 
 ---
 
