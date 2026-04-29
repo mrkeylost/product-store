@@ -23,7 +23,6 @@ A full-stack product inventory management app built with the **MERN** stack, fea
 - 📦 Create, read, update, and delete products
 - 🖼️ Drag-and-drop image upload with live preview (hosted on Cloudinary)
 - 🌙 Dark / light mode toggle
-- 🚦 Rate limiting via Upstash Redis
 - ☁️ Deployed on Vercel (frontend + backend as separate services)
 
 ---
@@ -36,7 +35,6 @@ A full-stack product inventory management app built with the **MERN** stack, fea
 | Backend    | Node.js, Express.js                          |
 | Database   | MongoDB (via Mongoose)                       |
 | Storage    | Cloudinary                                   |
-| Rate Limit | Upstash Redis                                |
 | Deployment | Vercel                                       |
 
 ---
@@ -63,7 +61,6 @@ product-store/
 - [Node.js](https://nodejs.org/) v18 or higher
 - [MongoDB](https://www.mongodb.com/) local instance (dev) or [Atlas](https://www.mongodb.com/cloud/atlas) (prod)
 - [Cloudinary](https://cloudinary.com/) account
-- [Upstash](https://upstash.com/) Redis database
 
 ### Installation
 
@@ -88,9 +85,6 @@ DB_URL=your_mongodb_atlas_connection_string
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
-
-UPSTASH_REDIS_REST_URL=your_upstash_url
-UPSTASH_REDIS_REST_TOKEN=your_upstash_token
 
 PORT=5001
 ```
@@ -120,16 +114,6 @@ Frontend runs at `http://localhost:5173`, backend at `http://localhost:5001`.
 ## ☁️ Deployment
 
 This project is configured for **Vercel** using `experimentalServices`. The frontend is served at `/` and the backend is routed under `/_/backend`.
-
-To deploy your own instance:
-1. Push the repo to GitHub and import it in [Vercel](https://vercel.com).
-2. Add all environment variables under **Settings → Environment Variables**.
-3. Vercel will run the root build script automatically on each push.
-
----
-
-## 📄 License
-This project is licensed under the [ISC License](https://opensource.org/licenses/ISC).
 
 ---
 
